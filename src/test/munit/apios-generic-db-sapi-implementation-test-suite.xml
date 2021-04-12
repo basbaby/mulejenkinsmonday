@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="apios-anypoint-jenkins-sapi-implementation-test-suite.xml" />
+	<munit:test name="customer-register-flow-positive-unittest" doc:id="947182bb-6b93-40e1-94d4-4f90469e0111" description="Test">
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="dbe66c63-cc09-4458-8a2b-f979944826d9" processor="db:insert">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Insert User Details To User Table" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="f34ec4a8-0724-4845-9a00-8f8f94453ca3" >
+				<munit:payload value="#[output application/java --- readUrl('classpath://cucumberResources/registerCustomerInput.json')]" mediaType="application/json" />
+
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to customer-register-flow" doc:id="a80afbfc-aeab-41ac-a989-1d141c821ac3" name="customer-register-flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="6ac9811f-1226-487e-8ed6-f2f3d67054f0" message="Payload cannot be null" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="67be71de-6bc2-41d2-a5f7-88d1cd2d7f02" actual="#[payload]" expected="#[output application/java --- readUrl('classpath://cucumberResources/registerCustomerOutput.json')]" message="Payload is not as Expected"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="user-subscription-flow-positive-unittest" doc:id="19eee383-9eb8-4e5b-b296-3f862e092f6b" description="Test">
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="d9020443-6750-4d89-a477-56ccbc776dfc" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Get Subscribed User Details" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://examples/retrieve-subscriptions.dwl')]" mediaType="application/java" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to user-subscription-flow" doc:id="792ce394-1d43-4ac3-87f4-823ec131d769" name="user-subscription-flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="5c127e9f-545d-4cb7-a857-b2db245c3a1b" message="Payload cannot be null" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="b8ca557b-e674-4154-88f7-b1ec53e60dc2" actual="#[payload]" expected="#[readUrl('classpath://examples/retrieve-subscriptions.dwl')]" message="Payload is not as Expected" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="synchronize-users-implementation-positive-unittest" doc:id="3921ba8b-3dfd-400c-9379-c74eef940ab5" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="9129c1af-ea68-4c17-a4dd-9fa2f08bf2f8" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Get User Details" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://examples/retrieve-users.dwl')]" mediaType="application/java" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to synchronize-users-implementation-flow" doc:id="9e8cbeff-9239-416b-aa40-da0926f5c983" name="synchronize-users-implementation-flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="837e0841-c537-4b71-a3ec-eb123aabefd7" message="Payload cannot be null" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="c1c3b6ae-4e52-4e34-aa5b-79f33c8f011c" actual="#[payload]" expected="#[readUrl('classpath://examples/retrieve-users.dwl')]" message="Payload is not as Expected" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="customer-register-flow-negative-test" doc:id="887f1091-f72b-4f67-a269-ab8b3e28b981" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="2541ecbf-22af-4883-97b5-d46a57234f3b" processor="db:insert" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Insert User Details To User Table" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="DB:CONNECTIVITY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="f4676bc5-af60-4419-9548-931f1284dc0c">
+				<munit:payload value="#[output application/java --- readUrl('classpath://cucumberResources/registerCustomerInput.json')]" mediaType="application/json" />
+
+			</munit:set-event>
+			<try doc:name="Try" doc:id="4ce982b5-c941-4ab9-9529-886d36d1c604" >
+				<flow-ref doc:name="Flow-ref to customer-register-flow" doc:id="75a6213b-a793-40db-9b30-cc880fe2a976" name="customer-register-flow" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="4f3f94d2-10ae-4652-8bc4-1ebb1a7a3bb0">
+						<logger level="INFO" doc:name="Logger" doc:id="4f72f7dc-382c-4fcd-806d-0cf6a3f5984c" message="Error Occured" />
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="6025fc4c-2a62-4e3b-a980-8661b9a0cd6b" actual="#[payload.statusCode]" expected="500" message="Invalid httpStatus"/>
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="acc5fc1f-7264-441f-bf99-18e7d491df9e" actual="#[payload.message]" expected="CONNECTIVITY" message="Invalid Error type" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="user-subscription-flow-negative-test" doc:id="8a23196d-8f90-419f-ba19-47b5d7bad544" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="5303639f-0e77-43df-b372-d930fbd0b59a" processor="db:select" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Get Subscribed User Details" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="DB:CONNECTIVITY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="73bc01f2-ba67-4d43-9a1c-cea0532250d1" >
+				<flow-ref doc:name="Flow-ref to user-subscription-flow" doc:id="e585e46f-9d41-4fd7-8415-34e643609178" name="user-subscription-flow" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="c7906c36-0df7-4ff2-9806-61f0dacac22d">
+						<logger level="INFO" doc:name="Logger" doc:id="645aad1c-90fa-403b-b40f-e33d1f3470dc" message="Error Occured" />
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="aa5026ec-85e2-46e6-9878-e4745f420ddc" actual="#[payload.statusCode]" expected="500" message="Invalid httpStatus" />
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="bfad4879-7dba-4a79-84e1-e723efd09dc1" actual="#[payload.message]" expected="CONNECTIVITY" message="Invalid Error type"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="synchronize-users-implementation-flow-negative-test" doc:id="8503a3b3-c49c-4912-ae44-97e30dc53059" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="e12cd9cb-ff70-4f53-97f7-124f51d67c55" processor="db:select" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Get User Details" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="DB:BAD_SQL_SYNTAX" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="255603da-c6bc-45f7-81c1-eb3630ba2b71" >
+				<flow-ref doc:name="Flow-ref to synchronize-users-implementation-flow" doc:id="5062d85c-ecd0-4450-b266-5cb76f9c8857" name="synchronize-users-implementation-flow" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="c7ef4c4a-802f-4a24-b857-af41c9f2b8d2" type="DB:BAD_SQL_SYNTAX">
+						<logger level="INFO" doc:name="Logger" doc:id="6e263dc8-3f55-4640-9d61-f9039589902b" message="Error Occured"/>
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="8af939d2-1524-4878-8bf9-3e6f9b2b96a5" actual="#[payload.statusCode]" expected="404" message="Http status is invalid"/>
+		</munit:validation>
+	</munit:test>
+
+</mule>

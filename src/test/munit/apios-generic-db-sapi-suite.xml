@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="apios-anypoint-jenkins-sapi-suite.xml" />
+	<munit:test name="apiops-generic-db-sapi-main-test" doc:id="559622f9-68c8-40f1-ac74-1a3efd24588c" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock APIkit Router" doc:id="5de23616-d277-4818-813d-a0774bd92982" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="apiops-generic-db-sapi-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://apiosanypointbddsapimaintest/mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://apiosanypointbddsapimaintest/mock_variable_.dwl')]" />
+						<munit-tools:variable key="httpStatus" value="#[readUrl('classpath://apiosanypointbddsapimaintest/mock_variable_1.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="c4c9663d-0acb-4ad8-9d9d-531082119055" >
+				<munit:payload value="#[readUrl('classpath://apiosanypointbddsapimaintest/set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://apiosanypointbddsapimaintest/set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to apiops-generic-db-sapi-main" doc:id="bc51fd9d-2304-4189-a38e-36f500989aba" name="apiops-generic-db-sapi-main"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="f33b3bc7-50ce-47c6-a15e-8b334f91afda" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import apiosanypointbddsapimaintest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="apiops-generic-db-sapi-main-test-users" doc:id="dc30b105-1fd6-4688-8379-23ca76931cec" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock APIkit Router" doc:id="1bc48232-528c-41d1-880b-b4e563f229e8" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="apiops-generic-db-sapi-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://apiosanypointbddsapimaintest1/mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://apiosanypointbddsapimaintest1/mock_variable_.dwl')]" />
+						<munit-tools:variable key="httpStatus" value="#[readUrl('classpath://apiosanypointbddsapimaintest1/mock_variable_1.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="81a7dadb-74a1-43c1-be74-e191821c0260" >
+				<munit:payload value="#[readUrl('classpath://apiosanypointbddsapimaintest1/set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://apiosanypointbddsapimaintest1/set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to apiops-generic-db-sapi-main" doc:id="3063de73-208d-4630-8954-fc85a734db8c" name="apiops-generic-db-sapi-main"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="a27c74de-45a0-4aef-870d-d2ddd659d3f3" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import apiosanypointbddsapimaintest1::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="get-synchronize-users-apiops-generic-db-sapi-config-test" doc:id="5317e31f-606e-40bd-a017-869991341122" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock synchronize-users-implementation-Flow" doc:id="eb4ba400-7338-4016-8741-0fb4fa9490cd" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="synchronize-users-implementation-Flow" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://getsynchronizeUsersapiosanypointbddsapiconfigtest/mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://getsynchronizeUsersapiosanypointbddsapiconfigtest/mock_variable_.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="f77522b8-1ede-4515-8737-61d79a3bdaa6" >
+				<munit:payload value="#[readUrl('classpath://getsynchronizeUsersapiosanypointbddsapiconfigtest/set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://getsynchronizeUsersapiosanypointbddsapiconfigtest/set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getsynchronizeUsersapiosanypointbddsapiconfigtest/set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\synchronizeUsers:apiops-generic-db-sapi-config" doc:id="e25cd16d-3bf7-49e9-88d8-a2df82140a66" name="get:\synchronizeUsers:apiops-generic-db-sapi-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="c449562b-86c2-4f54-89e6-965ecbe71ab9" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getsynchronizeUsersapiosanypointbddsapiconfigtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="get-users-subscription-apiops-generic-db-sapi-config-test" doc:id="d653dc83-991d-4de7-9351-193956988e9e" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock user-subscription-flow" doc:id="2b2b2d27-8578-40fc-bcf5-e18abff3a506" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="user-subscription-flow" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://getusersregisterUsersubscriptionapiosanypointbddsapiconfigtest/mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://getusersregisterUsersubscriptionapiosanypointbddsapiconfigtest/mock_variable_.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="38522962-9c73-4db1-a7ae-8028d5d1b073" >
+				<munit:payload value="#[readUrl('classpath://getusersregisterUsersubscriptionapiosanypointbddsapiconfigtest/set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://getusersregisterUsersubscriptionapiosanypointbddsapiconfigtest/set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getusersregisterUsersubscriptionapiosanypointbddsapiconfigtest/set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\users\registerUser\subscription:apiops-generic-db-sapi-config" doc:id="d3b8f398-6aa7-456e-9f8a-9cfcb5e6af90" name="get:\users\registerUser\subscription:apiops-generic-db-sapi-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="6c7718d7-24a7-4e56-9627-89ff0e804708" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getusersregisterUsersubscriptionapiosanypointbddsapiconfigtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="apiops-generic-db-sapi-console-test" doc:id="a41d6073-5a0a-464a-8a35-d04da90175f2" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock APIkit Console" doc:id="7c95f4d6-df92-4e87-bfec-c80ffd72c049" processor="apikit:console">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="apiops-generic-db-sapi-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/dw --- readUrl('classpath://apiosanypointbddsapiconsoletest/mock_payload.dwl')]" mediaType="application/dw" />
+					<munit-tools:attributes value="#[readUrl('classpath://apiosanypointbddsapiconsoletest/mock_attributes.dwl')]" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://apiosanypointbddsapiconsoletest/mock_variable_.dwl')]" />
+						<munit-tools:variable key="httpStatus" value="#[readUrl('classpath://apiosanypointbddsapiconsoletest/mock_variable_1.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="eb4883ef-a10d-4375-8460-ab02418254cb" >
+				<munit:payload value="#[readUrl('classpath://apiosanypointbddsapiconsoletest/set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://apiosanypointbddsapiconsoletest/set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to apiops-generic-db-sapi-console" doc:id="cd5ca5e0-1dc8-46c3-869c-993f4dbe7539" name="apiops-generic-db-sapi-console"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="be57a018-5eee-450d-9f20-fa32ad36d49e" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import apiosanypointbddsapiconsoletest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="post:\users\registerUser:application\json:apiops-generic-db-sapi-console-config-test" doc:id="01daf23b-e7fe-4231-b16b-827a4d41c4ba" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock customer-register-flow" doc:id="b07d51d9-624c-4cf7-9172-503703dbcf82" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="customer-register-flow" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://postusersregisterUserapplicationjsonapiosanypointbddsapiconfigtest/mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postusersregisterUserapplicationjsonapiosanypointbddsapiconfigtest/mock_variable_.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="e2f7d2b1-8522-4d9b-962b-246817f3a275" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://postusersregisterUserapplicationjsonapiosanypointbddsapiconfigtest/set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://postusersregisterUserapplicationjsonapiosanypointbddsapiconfigtest/set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://postusersregisterUserapplicationjsonapiosanypointbddsapiconfigtest/set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post:\users\registerUser:application\json:apiops-generic-db-sapi-config" doc:id="9666428a-70b5-4566-833d-318d6f00f4a7" name="post:\users\registerUser:application\json:apiops-generic-db-sapi-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="df657000-ccd1-4eed-a552-d6e5858ee21a" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import postusersregisterUserapplicationjsonapiosanypointbddsapiconfigtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+
+</mule>

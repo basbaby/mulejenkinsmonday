@@ -1,0 +1,38 @@
+[
+    {
+        "SUBSCRIPTION_ID": 5,
+        "SOURCE_LOCATION": "BSK",
+        "ADVANCE_NOTIFY_TIME_MIN": 120,
+        "USER_ID": "7",
+        "STATUS_TYPE_ID": 1,
+        "UPDATED_TIMESTAMP": "2020-05-11T03:13:45",
+        "CREATION_TIMESTAMP": "2020-05-06T09:53:36",
+        "DESTINATION_LOCATION": "WAT",
+        "TO_TIME": "1970-01-01T20:15:00",
+        "FROM_TIME": "1970-01-01T19:15:00"
+    },
+    {
+        "SUBSCRIPTION_ID": 6,
+        "SOURCE_LOCATION": "BSK",
+        "ADVANCE_NOTIFY_TIME_MIN": 120,
+        "USER_ID": "7",
+        "STATUS_TYPE_ID": 1,
+        "UPDATED_TIMESTAMP": "2020-05-11T03:12:32",
+        "CREATION_TIMESTAMP": "2020-05-06T10:09:33",
+        "DESTINATION_LOCATION": "WAT",
+        "TO_TIME": "1970-01-01T19:15:00",
+        "FROM_TIME": "1970-01-01T17:45:00"
+    },
+    {
+        "SUBSCRIPTION_ID": 35,
+        "SOURCE_LOCATION": "BSK",
+        "ADVANCE_NOTIFY_TIME_MIN": 30,
+        "USER_ID": "53",
+        "STATUS_TYPE_ID": 1,
+        "UPDATED_TIMESTAMP": "2020-05-11T13:07:04",
+        "CREATION_TIMESTAMP": "2020-05-11T13:07:04",
+        "DESTINATION_LOCATION": "WAT",
+        "TO_TIME": "1970-01-01T13:30:00",
+        "FROM_TIME": "1970-01-01T13:00:00"
+    }]
+    

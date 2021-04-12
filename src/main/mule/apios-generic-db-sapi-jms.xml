@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:ftp="http://www.mulesoft.org/schema/mule/ftp"
+	xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns:jms="http://www.mulesoft.org/schema/mule/jms" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ftp http://www.mulesoft.org/schema/mule/ftp/current/mule-ftp.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<flow name="jmsFlow_csv_json" doc:id="56ff2ec1-bfe1-441d-b2e8-4778ced4f2d8" initialState="stopped">
+		<ftp:listener doc:name="File" doc:id="d224de05-44bb-4007-b0d2-b96abe72fe2c" recursive="false" watermarkEnabled="true" config-ref="ftpConfig">
+			<scheduling-strategy >
+				<fixed-frequency frequency="2000" />
+			</scheduling-strategy>
+		</ftp:listener>
+		<logger level="INFO" doc:name="Actual Payload" doc:id="c2fd3f14-4c46-4762-97a5-b632fe2620cb" message="#[payload]"/>
+		<ee:transform doc:name="Payload to JSON" doc:id="398e2955-8fb0-4e6c-baa0-0dc0a15cca4a" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="JSON Payload" doc:id="120456ce-e86c-4e4d-9867-4c3a813cd38d" message="#[payload]"/>
+		<foreach doc:name="For Each" doc:id="b8545cb0-0ce5-4a46-ba16-a433221ac230" collection="#[payload]" >
+			<jms:publish doc:name="Publish to JMS" doc:id="7ab5e6eb-aba8-49b0-bfbd-524f70453d7f" config-ref="jmsConfig" destination="${jms.destination}" sendCorrelationId="ALWAYS" />
+			<logger level="INFO" doc:name="Published JSON Object" doc:id="e35f9069-f679-459a-bdf9-befe77d26e4b" message="#[payload]" />
+		</foreach>
+	</flow>
+	<!-- <flow name="apios-anypoint-jms-jenkins-sapi-scheduler" doc:id="305c73a4-602b-4958-bd81-f43a57d31a0b" initialState="stopped">
+		<scheduler doc:name="Scheduler" doc:id="2e61a827-e5b5-4bc3-9707-c6588b4c0ed8">
+			<scheduling-strategy>
+				<fixed-frequency frequency="10000"/>
+			</scheduling-strategy>
+		</scheduler>
+		<ftp:read doc:name="Read" doc:id="e74b78a0-209b-4845-9fc5-877d02d3372e" path="${ftp.filepath}" config-ref="FTP_Config" />
+		<logger level="INFO" doc:name="Logger" doc:id="5aa1ff72-7148-48d6-a423-bc8ea7853c3e" message="#[payload]"/>
+		<ee:transform doc:name="Transform Message" doc:id="d4901301-6b6c-479a-be5d-e884ba21133f">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+-&#45;&#45;
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="35724a01-7dbc-44b8-b918-136a8e6d6d32" message="#[payload]"/>
+		<foreach doc:name="For Each" doc:id="f823f578-75bd-4505-9b00-77c9a1b685c1" collection="#[payload]">
+			<jms:publish doc:name="Publish" doc:id="012ba1d3-638d-4c07-9915-62d88d8f7c6c" config-ref="JMS_Config" destination="${jms.destination}" sendCorrelationId="ALWAYS" />
+			<logger level="INFO" doc:name="Logger" doc:id="9cea85af-43ed-4a76-b400-6f0828e40833" message="#[payload]" />
+		</foreach>
+	</flow> -->
+	<!-- <flow name="apios-anypoint-jms-jenkins-sapi-onTableRow" doc:id="7319afb4-ce3d-443d-9aa6-92e06ca576c1" initialState="stopped">
+		<db:listener table="${db.table}" doc:name="On Table Row" doc:id="4ff04b21-2572-4f08-b294-5c6f03d0bdb2" config-ref="databaseConfig">
+			<scheduling-strategy >
+				<fixed-frequency />
+			</scheduling-strategy>
+		</db:listener>
+		<logger level="INFO" doc:name="Logger" doc:id="71b7dd1b-4c0d-4894-ae88-640c3742612e" message="#[payload]"/>
+		<ee:transform doc:name="Transform Message" doc:id="89835024-7fa6-456d-bc9a-8d9519c9b431" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+-&#45;&#45;
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="75e066ae-f1b4-4477-b7a1-17dbc38e2a2b" message="#[payload]"/>
+		<jms:publish doc:name="Publish" doc:id="c75c0123-465d-4201-9075-f2f22f582990" config-ref="JMS_Config" destination="${jms.destination}" sendCorrelationId="ALWAYS" />
+		<logger level="INFO" doc:name="Logger" doc:id="ad7bc922-1a75-42db-9813-69d57179bc89" message="#[payload]"/>
+	</flow> -->
+</mule>

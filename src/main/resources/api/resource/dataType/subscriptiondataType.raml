@@ -1,0 +1,53 @@
+#%RAML 1.0 DataType
+description: create subscription datatype
+type: object
+properties:
+  subscriptionId:
+    description: subscriptionid
+    type: integer
+    required: false
+  
+  userId:
+    description: userid
+    type: string
+    required: false
+    
+  source_location: 
+    description: travel from details
+    type: string
+    required: true
+
+  destination_location: 
+    description: travel to details
+    type: string
+    required: true
+
+  from_time: 
+    description: from time
+    type: time-only
+    required: true
+    
+  to_time: 
+    description: to_time
+    type: time-only
+    required: true
+  
+  Advance_notify_time_min?: 
+    description: time to notify
+    type: time-only
+    required: false
+
+  updatedtimestamp?: 
+    description: the time the user updates the registration
+    type: datetime
+    required: false
+
+  creationtimestamp?: 
+    description: the time the user creates the registration
+    type: datetime
+    required: false
+
+  statustypeID?:
+    description: User status id
+    type: integer
+    required: false

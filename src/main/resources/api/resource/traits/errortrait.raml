@@ -1,0 +1,46 @@
+#%RAML 1.0 Trait
+responses:
+  200:
+    body:
+      application/json:
+        example:
+          description: Success 
+      
+  400:
+    body:
+      application/json:
+        example:
+          description: Error retrieving data from the customer database 
+  401:
+    body:
+      application/json:
+        example:
+          description: Unauthorized, The client_id or client_secret are not valid 
+  403:
+    body:
+      application/json:
+        example:
+          description: forbidden
+
+  429:
+    body:
+      application/json:
+        example:
+          description: The client used all of it's request quota for the current period.
+
+  500:
+    body:
+      application/json:
+        example:
+          description: An error ocurred, see the specific message (Only if it is a WSDL enpoint).
+  502:
+    body:
+      application/json:
+        example:
+          description: Bad Gateway
+
+  503:
+    body:
+      application/json:
+        example:
+          description: service Unreachable.

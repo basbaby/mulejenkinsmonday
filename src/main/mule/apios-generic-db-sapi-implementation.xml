@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ftp="http://www.mulesoft.org/schema/mule/ftp" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/ftp http://www.mulesoft.org/schema/mule/ftp/current/mule-ftp.xsd">
+	<flow name="customer-register-flow" doc:id="3ff99c98-39ee-4c9f-8b36-c38aaa468c11" >
+		<logger level="INFO" doc:name="Log Actual Output" doc:id="929b7949-11e5-4b0b-a84d-47b55a78cb9c" message='"started customer register flow"'/>
+		<db:insert doc:name="Insert User Details To User Table" doc:id="4a02b1d5-2c97-4936-9e92-e1e2d0a7a04d" config-ref="databaseConfig">
+			<db:sql ><![CDATA[INSERT INTO nrs.USER(USER_ID,EMAIL_ID,STATUS_TYPE_ID,FIRST_NAME,LAST_NAME,PHONE_NUMBER)
+ 
+VALUES (:userId, :emailId, 1, :firstName,:lastName, :phoneNo );
+
+
+]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	"userId": payload.userId,
+	"emailId": payload.emailId,
+	"firstName": payload.firstName,
+	"lastName": payload.lastName,
+	
+	"phoneNo": payload.phoneNumber,
+		}]]]></db:input-parameters>
+		</db:insert>
+		<ee:transform doc:name="Transform to JSON" doc:id="e81b71b2-06c1-4437-ade7-ca2003311f7e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message:"Data inserted successfully"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Successful Insertion" doc:id="0b8237e3-f575-4fa5-be6b-48ca3fa1c232" message="#[payload]"/>
+	</flow>
+	<flow name="user-subscription-flow" doc:id="ece6466e-c8b5-4dc4-9ecc-76afd542e92f" >
+		<db:select doc:name="Get Subscribed User Details" doc:id="887ae723-ead7-44d0-b5a0-93727ebec254" config-ref="databaseConfig">
+			<db:sql ><![CDATA[SELECT * from SUBSCRIPTION where status_type_id=1;]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="Payload to JSON" doc:id="1aa4ad8f-6af1-4278-85f3-f6700f6ca448" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="synchronize-users-implementation-flow" doc:id="2e6c0e05-e4c4-42b4-b730-f57ad1f61bca" >
+		<db:select doc:name="Get User Details" doc:id="95317d93-e9d7-406f-be68-e20f84325505" config-ref="databaseConfig">
+			<db:sql ><![CDATA[select * from USER]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="Payload to JSON" doc:id="f81825ad-983e-4624-b047-dfbf3999f6dd" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
+	

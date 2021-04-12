@@ -1,0 +1,3 @@
+{
+  "message": "Data inserted successfully"
+}

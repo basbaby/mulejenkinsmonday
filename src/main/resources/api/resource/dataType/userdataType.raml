@@ -1,0 +1,48 @@
+#%RAML 1.0 DataType
+usage: customer sapi datatypes
+description: create user request payload types
+type: object
+properties:
+  
+  userId:
+    description: userid
+    type: string
+    required: false
+    
+  emailId: 
+    description: emailid
+    type: string
+    required: true
+
+  firstName: 
+    description: firstname of the user
+    type: string
+    required: true
+
+  lastName: 
+    description: lastname of the user
+    type: string
+    required: true
+    
+  phoneNumber: 
+    description: phonenumber of the user
+    type: string
+    required: true
+  
+  createdDate?: 
+    description: the time the user registers
+    type: datetime
+    required: false
+
+  updatedtimestamp?: 
+    description: the time the user updates the registration
+    type: datetime
+    required: false
+
+  statustypeID?:
+    description: User status id
+    type: integer
+    required: false
+
+
+

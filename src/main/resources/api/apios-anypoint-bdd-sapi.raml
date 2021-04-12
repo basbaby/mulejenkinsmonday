@@ -1,0 +1,44 @@
+#%RAML 1.0
+title: apios-anypoint-bdd-sapi
+version: v1
+traits:
+  responses: !include /resource/traits/errortrait.raml
+types: 
+  user: !include /resource/dataType/userdataType.raml
+  subscription: !include /resource/dataType/subscriptiondataType.raml
+/users:
+  /registerUser:
+    description: To get customer information
+               
+    post:
+        description: To register customer information to database
+        body:
+          application/json:
+            type: user
+            example: !include /resource/example/user-example.raml
+        responses:
+          201:
+            body:
+              application/json:
+                example: Successfully created the user
+        is: [responses]
+    /subscription:
+      get:
+        
+        responses:
+          200:
+            body:
+              application/json:
+                example:
+                  message: !include /resource/example/subscription-arr-example.raml
+        is: [responses]
+
+/synchronizeUsers:
+    description: This will be used to synchronize the user to the salesforce db.
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              examples:
+                'message': 'Users synchronized successfully'

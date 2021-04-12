@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+	xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<munit:config name="apios-anypoint-jenkins-sapi-test-suite.xml" />
+	<munit:test name="apiops-generic-db-sapi-main-bad-request" doc:id="74547324-c36f-4f46-bb9b-61f96c8536f1" description="Test">
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="0bf3a45a-2fa6-47cb-b3a3-bcdc699adac0" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="apiops-generic-db-sapi-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:BAD_REQUEST" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="e6972679-a22f-48d2-ac4a-0e4fd6cc41bd" >
+				<flow-ref doc:name="Flow-ref to apiops-generic-db-sapi-main" doc:id="e1ffad01-368a-46fc-91ba-63ee8446ca7f" name="apiops-generic-db-sapi-main" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="185e4863-bb56-433f-a1a3-76298f64a974" >
+						<logger level="INFO" doc:name="errorMessage" doc:id="39174910-b64e-4fa1-8ffe-5cc3fecc3764" message="#[payload]"/>
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="cbea8417-6940-4891-9c7b-8a3bc7545a11" actual="#[payload.message]" expected="Bad request" message="Invalid Payload"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="apiops-generic-db-sapi-main-not-found" doc:id="a481fb28-5a97-40fa-a5b7-0746bdd9a0bd" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="f85271ce-3915-4b5f-b489-a60f51ce55ec" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="apiops-generic-db-sapi-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:NOT_FOUND" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="c417d4fa-33a2-4673-b294-76b38a7fb3c2" >
+				<flow-ref doc:name="Flow-ref to apiops-generic-db-sapi-main" doc:id="7db6ae91-cc45-43d2-9439-1c3df3875201" name="apiops-generic-db-sapi-main" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="edc6b49e-9b39-4169-80de-fbc54b2a20be" >
+						<logger level="INFO" doc:name="errorMessage" doc:id="678c858b-8a25-4d6f-b2b3-9d4f378f2f38" message="#[payload]" />
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="fe49510d-5e34-4a08-839f-0cb3b8e3a05b" actual="#[payload.message]" expected="Resource not found" message="Invalid Payload" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="apiops-generic-db-sapi-main-test-method-not-allowed" doc:id="7dda4148-4b09-42b3-bc81-176c1d52a6be" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="fbaab1c4-ef1c-4848-ac9b-3ebe3d4d11b1" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="apiops-generic-db-sapi-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:METHOD_NOT_ALLOWED" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="57890405-5996-419d-bb95-75f4cfdf7423" >
+				<flow-ref doc:name="Flow-ref to apiops-generic-db-sapi-main" doc:id="0fd90a9a-7de5-4c66-84bb-e8d5bf278f9b" name="apiops-generic-db-sapi-main" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="2b1ce365-2a88-477e-a041-46f465a71f4a" >
+						<logger level="INFO" doc:name="errorMessage" doc:id="45e5f9a4-bc56-4cc8-b743-ffec8d613646" message="#[payload]" />
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="a7226c68-f434-48c0-a50a-c3d188e18ef1" actual="#[payload.message]" expected="Method not allowed" message="Invalid Payload" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="apiops-generic-db-sapi-main-test-not-acceptable" doc:id="5b868352-66ae-4a35-8ec3-b3ec482f7a38" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="0bb9646f-e0aa-47ca-a75b-130d680449d0" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="apiops-generic-db-sapi-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:NOT_ACCEPTABLE" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="e6c66904-72e4-424a-8abf-72bc0120dcd4" >
+				<flow-ref doc:name="Flow-ref to apiops-generic-db-sapi-main" doc:id="8053de24-c4a0-4815-ab81-07aaf8c42358" name="apiops-generic-db-sapi-main" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="6878faaf-a58e-408a-976c-e5a057243218" >
+						<logger level="INFO" doc:name="errorMessage" doc:id="84f6511f-686d-4d9b-9fd6-54c5cfb16eb3" message="#[payload]" />
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="61f7ba70-2ac1-49ab-90ce-448188a1ba9b" actual="#[payload.message]" expected="Not acceptable" message="Invalid Payload" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="apiops-generic-db-sapi-main-test-unsupported-mediatype" doc:id="f57b0c51-21e5-4a93-8ae5-bb329a2897ba" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="196860b1-3621-4a25-a4f1-be3e1b0b0165" processor="apikit:router" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="apiops-generic-db-sapi-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:UNSUPPORTED_MEDIA_TYPE" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="0988f972-ade1-457a-945d-55a944944049" >
+				<flow-ref doc:name="Flow-ref to apiops-generic-db-sapi-main" doc:id="3e9c9c8c-194b-431f-8c8d-caa5a8350450" name="apiops-generic-db-sapi-main" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="ad978bde-1934-4efa-9d78-8229ad55e809" >
+						<logger level="INFO" doc:name="errorMessage" doc:id="a05b65fd-f89a-481a-a5d3-2c9eb8d3a5fd" message="#[payload]" />
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="cd226f9c-187b-4249-bbdc-51e0938736cf" actual="#[payload.message]" expected="Unsupported media type" message="Invalid Payload" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="apiops-generic-db-sapi-main-test-not-implemented" doc:id="372fb07a-c2d5-4192-9187-875a4bd9b0ba" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="677adea5-c909-400c-a578-297045f51505" processor="apikit:router" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="apiops-generic-db-sapi-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:NOT_IMPLEMENTED" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="69f0b367-5d1f-434c-9f74-5d3dae66f457" >
+				<flow-ref doc:name="Flow-ref to apiops-generic-db-sapi-main" doc:id="a608779f-db4d-439c-8dbe-4463d83cd320" name="apiops-generic-db-sapi-main" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="b3848ca6-e702-41ab-a96e-3f38599f45e9" >
+						<logger level="INFO" doc:name="errorMessage" doc:id="f4c62300-a7ea-4e28-b278-d9f369ab1da5" message="#[payload]" />
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="27c27467-3bc6-49b8-b379-ce6c33dc54ce" actual="#[payload.message]" expected="Not Implemented" message="Invalid Payload" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="apiops-generic-db-sapi-test-suite-console-test" doc:id="b13e8eb3-9325-4fd8-addf-f2d92d9cd62c" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="48ad5259-184d-4f18-a87b-fb419c3ebd4e" processor="apikit:console">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="apiops-generic-db-sapi-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:NOT_FOUND" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="57a2ec90-ac3a-4310-b8b3-36fe218e6779" >
+				<flow-ref doc:name="Flow-ref to apiops-generic-db-sapi-console" doc:id="eab6149f-9fe3-4699-a0ed-6d714eb05e89" name="apiops-generic-db-sapi-console" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="Error Continue" doc:id="7a00eb01-c34b-4227-bb79-a8a0809b5c50" >
+						<logger level="INFO" doc:name="errorMessage" doc:id="42351123-153b-4179-b23a-4ffe2f32c9bf" message="#[payload]" />
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="4cebcc62-2695-446f-82c0-a1745af534c5" actual="#[payload.message]" expected="Resource not found" message="Invalid payload "/>
+		</munit:validation>
+	</munit:test>
+
+</mule>

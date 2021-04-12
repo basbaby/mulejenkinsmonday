@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="apios-anypoint-jms-jenkins-sapi-suite.xml" />
+	<!-- <munit:test name="apios-anypoint-jms-jenkins-sapi-scheduler-test" doc:id="bbb47a25-d245-4c8a-97e4-6e5dde04be41" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Publish" doc:id="ba79a852-2b57-40b5-bb06-ead7fbcf5074" processor="jms:publish">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="012ba1d3-638d-4c07-9915-62d88d8f7c6c" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-call flow="mock-jms:publish" />
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="6890f622-fc2a-431c-b3bf-c2c05059f5b2" >
+				<munit:payload value="#[readUrl('classpath://apiosanypointjmsjenkinssapischedulertest\set-event_payload.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to apios-anypoint-jms-jenkins-sapi-scheduler" doc:id="491acb0a-2003-40ab-859e-7a983261fd0d" name="apios-anypoint-jms-jenkins-sapi-scheduler"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="990b79ac-4b70-4d61-ad00-73673e5cb382" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import apiosanypointjmsjenkinssapischedulertest::assert_expression_payload
+-&#45;&#45;
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test> -->
+	<flow name="mock-jms:publish" doc:id="457e5cf9-ab6d-4e87-b540-988f2447f520" >
+		<try doc:name="Try" doc:id="fe0353f8-2afd-41ad-8a8c-bfb2d0c078f2" >
+			<munit-tools:retrieve doc:name="Retrieve" doc:id="664820a5-ac4c-45d6-b613-4c8767d86ec5" key="Mock Publish"/>
+			<error-handler >
+				<on-error-continue enableNotifications="false" logException="false" doc:name="On Error Continue" doc:id="7b566808-9e80-4eb3-b33d-b27a0bbc8bdf" type="ANY">
+					<set-payload value="#[1]" doc:name="Set Payload" doc:id="31d8fd52-6944-4eeb-8f89-68062afd162d" />
+				</on-error-continue>
+			</error-handler>
+		</try>
+		<munit-tools:store doc:name="Store" doc:id="19c295c2-522e-42b7-a315-f8ad49e36858" key="Mock Publish">
+			<munit-tools:value ><![CDATA[#[payload + 1]]]></munit-tools:value>
+		</munit-tools:store>
+		<choice doc:name="Choice" doc:id="64a41102-097b-4434-a098-cc950aa79119" >
+			<when expression="#[payload == 1]">
+				<munit:set-event doc:name="Set Event" doc:id="058b9738-de03-4e76-8580-eac5a2da016f" >
+					<munit:payload value="#[output application/json --- readUrl('classpath://apiosanypointjmsjenkinssapischedulertest\mock_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variables >
+						<munit:variable key="rootMessage" value="#[readUrl('classpath://apiosanypointjmsjenkinssapischedulertest\mock_variable_.dwl')]" />
+						<munit:variable key="counter" value="#[readUrl('classpath://apiosanypointjmsjenkinssapischedulertest\mock_variable_1.dwl')]" />
+					</munit:variables>
+				</munit:set-event>
+			</when>
+			<when expression="#[payload == 2]">
+				<munit:set-event doc:name="Set Event" doc:id="9971bbf7-7347-46ac-815c-ebf46c304651" >
+					<munit:payload value="#[output application/json --- readUrl('classpath://apiosanypointjmsjenkinssapischedulertest\mock_payload1.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variables >
+						<munit:variable key="rootMessage" value="#[readUrl('classpath://apiosanypointjmsjenkinssapischedulertest\mock_variable_2.dwl')]" />
+						<munit:variable key="counter" value="#[readUrl('classpath://apiosanypointjmsjenkinssapischedulertest\mock_variable_3.dwl')]" />
+					</munit:variables>
+				</munit:set-event>
+			</when>
+			<when expression="#[payload == 3]">
+				<munit:set-event doc:name="Set Event" doc:id="ba99ad28-ff1c-4a88-a071-d6c66b81c38f" >
+					<munit:payload value="#[output application/json --- readUrl('classpath://apiosanypointjmsjenkinssapischedulertest\mock_payload2.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variables >
+						<munit:variable key="rootMessage" value="#[readUrl('classpath://apiosanypointjmsjenkinssapischedulertest\mock_variable_4.dwl')]" />
+						<munit:variable key="counter" value="#[readUrl('classpath://apiosanypointjmsjenkinssapischedulertest\mock_variable_5.dwl')]" />
+					</munit:variables>
+				</munit:set-event>
+			</when>
+			<when expression="#[payload == 4]">
+				<munit:set-event doc:name="Set Event" doc:id="d5f15514-f888-4bbf-b105-03968f6fb152" >
+					<munit:payload value="#[output application/json --- readUrl('classpath://apiosanypointjmsjenkinssapischedulertest\mock_payload3.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variables >
+						<munit:variable key="rootMessage" value="#[readUrl('classpath://apiosanypointjmsjenkinssapischedulertest\mock_variable_6.dwl')]" />
+						<munit:variable key="counter" value="#[readUrl('classpath://apiosanypointjmsjenkinssapischedulertest\mock_variable_7.dwl')]" />
+					</munit:variables>
+				</munit:set-event>
+			</when>
+			<when expression="#[payload == 5]">
+				<munit:set-event doc:name="Set Event" doc:id="ef96b3e6-69b8-4a1c-b7ca-dfa45823f484" >
+					<munit:payload value="#[output application/json --- readUrl('classpath://apiosanypointjmsjenkinssapischedulertest\mock_payload4.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variables >
+						<munit:variable key="rootMessage" value="#[readUrl('classpath://apiosanypointjmsjenkinssapischedulertest\mock_variable_8.dwl')]" />
+						<munit:variable key="counter" value="#[readUrl('classpath://apiosanypointjmsjenkinssapischedulertest\mock_variable_9.dwl')]" />
+					</munit:variables>
+				</munit:set-event>
+			</when>
+			<when expression="#[payload == 6]">
+				<munit:set-event doc:name="Set Event" doc:id="c70f9c4e-58aa-4f14-9e69-21c242199e68" >
+					<munit:payload value="#[output application/json --- readUrl('classpath://apiosanypointjmsjenkinssapischedulertest\mock_payload5.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variables >
+						<munit:variable key="rootMessage" value="#[readUrl('classpath://apiosanypointjmsjenkinssapischedulertest\mock_variable_10.dwl')]" />
+						<munit:variable key="counter" value="#[readUrl('classpath://apiosanypointjmsjenkinssapischedulertest\mock_variable_11.dwl')]" />
+					</munit:variables>
+				</munit:set-event>
+			</when>
+			<otherwise >
+				<munit-tools:fail doc:name="Fail" doc:id="55970741-4394-43a1-b746-6985da96b975" message="There are no more events to mock"/>
+			</otherwise>
+		</choice>
+	</flow>
+	<!-- <munit:test name="apios-anypoint-jms-jenkins-sapi-onTableRow-test" doc:id="0eba94c9-9f1b-45fb-b1e8-d7b23cb38e6b" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Publish" doc:id="8debdeb2-6583-4ad2-9385-0165b6d267d8" processor="jms:publish">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="c75c0123-465d-4201-9075-f2f22f582990" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json -&#45;&#45; readUrl('classpath://apiosanypointjmsjenkinssapionTableRowtest\mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="021bae68-3d3b-4f1f-9b71-6eee9b67a7bc" >
+				<munit:payload value="#[output application/java -&#45;&#45; readUrl('classpath://apiosanypointjmsjenkinssapionTableRowtest\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/java" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to apios-anypoint-jms-jenkins-sapi-onTableRow" doc:id="05a505e0-71e6-4047-a500-f9e4456545ce" name="apios-anypoint-jms-jenkins-sapi-onTableRow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="8c84560d-0e1c-4fd2-baa2-1cfad32284a7" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import apiosanypointjmsjenkinssapionTableRowtest::assert_expression_payload
+-&#45;&#45;
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test> -->
+	<munit:test name="jmsFlow_csv_json-test" doc:id="60d33346-a8bb-4194-81a2-17d65fcc6767" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Publish" doc:id="64717e07-a200-49e6-9370-d21e57360a46" processor="jms:publish">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Publish to JMS" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-call flow="mock-jms:publish1" />
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="74a4a30b-9f36-4dcb-8cdd-c0adb1ee72b1" >
+				<munit:payload value="#[output text/json --- readUrl('classpath://jmsFlowcsvjsontest\set-event_payload1.dwl')]" encoding="UTF-8" mediaType="text/json" />
+				<munit:attributes value="#[readUrl('classpath://jmsFlowcsvjsontest\set-event_attributes1.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to jmsFlow_csv_json" doc:id="267100bc-5b02-409d-b1e6-5244f52e11c5" name="jmsFlow_csv_json"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="f417eca5-8145-468b-ab01-76c128156d00" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import jmsFlowcsvjsontest::assert_expression_payload1
+---
+assert_expression_payload1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<flow name="mock-jms:publish1" doc:id="4772d527-f157-4b33-adff-2e188fa5b318" >
+		<try doc:name="Try" doc:id="50b977c6-e5e5-4b0f-a4f1-15c3d6cedd14" >
+			<munit-tools:retrieve doc:name="Retrieve" doc:id="1c83eaab-02fe-4361-a81a-a3bae3782ef5" key="Mock Publish"/>
+			<error-handler >
+				<on-error-continue enableNotifications="false" logException="false" doc:name="On Error Continue" doc:id="12b3a193-3902-4ede-b267-6207ab2484ec" type="ANY">
+					<set-payload value="#[1]" doc:name="Set Payload" doc:id="c0007639-3a0c-411f-9fa9-451ac2e2828d" />
+				</on-error-continue>
+			</error-handler>
+		</try>
+		<munit-tools:store doc:name="Store" doc:id="8f71c82c-01e4-4803-8da0-aa7ea4f9506a" key="Mock Publish">
+			<munit-tools:value ><![CDATA[#[payload + 1]]]></munit-tools:value>
+		</munit-tools:store>
+		<choice doc:name="Choice" doc:id="c81d2172-8d71-4314-af1d-f4cec3f3d753" >
+			<when expression="#[payload == 1]">
+				<munit:set-event doc:name="Set Event" doc:id="b32ca4b2-6f72-4305-826f-e03598e994e6" >
+					<munit:payload value="#[output application/json --- readUrl('classpath://jmsFlowcsvjsontest\mock_payload6.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variables >
+						<munit:variable key="rootMessage" value="#[readUrl('classpath://jmsFlowcsvjsontest\mock_variable_12.dwl')]" />
+						<munit:variable key="counter" value="#[readUrl('classpath://jmsFlowcsvjsontest\mock_variable_13.dwl')]" />
+					</munit:variables>
+				</munit:set-event>
+			</when>
+			<when expression="#[payload == 2]">
+				<munit:set-event doc:name="Set Event" doc:id="a01e9163-22fa-4c08-9865-9738e153a6a4" >
+					<munit:payload value="#[output application/json --- readUrl('classpath://jmsFlowcsvjsontest\mock_payload7.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variables >
+						<munit:variable key="rootMessage" value="#[readUrl('classpath://jmsFlowcsvjsontest\mock_variable_14.dwl')]" />
+						<munit:variable key="counter" value="#[readUrl('classpath://jmsFlowcsvjsontest\mock_variable_15.dwl')]" />
+					</munit:variables>
+				</munit:set-event>
+			</when>
+			<when expression="#[payload == 3]">
+				<munit:set-event doc:name="Set Event" doc:id="e3c21fa2-aa77-4d1c-97bf-ea3cc1148811" >
+					<munit:payload value="#[output application/json --- readUrl('classpath://jmsFlowcsvjsontest\mock_payload8.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variables >
+						<munit:variable key="rootMessage" value="#[readUrl('classpath://jmsFlowcsvjsontest\mock_variable_16.dwl')]" />
+						<munit:variable key="counter" value="#[readUrl('classpath://jmsFlowcsvjsontest\mock_variable_17.dwl')]" />
+					</munit:variables>
+				</munit:set-event>
+			</when>
+			<when expression="#[payload == 4]">
+				<munit:set-event doc:name="Set Event" doc:id="eea751b7-f2ec-4f55-98a6-2e5ad99cdf6c" >
+					<munit:payload value="#[output application/json --- readUrl('classpath://jmsFlowcsvjsontest\mock_payload9.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variables >
+						<munit:variable key="rootMessage" value="#[readUrl('classpath://jmsFlowcsvjsontest\mock_variable_18.dwl')]" />
+						<munit:variable key="counter" value="#[readUrl('classpath://jmsFlowcsvjsontest\mock_variable_19.dwl')]" />
+					</munit:variables>
+				</munit:set-event>
+			</when>
+			<when expression="#[payload == 5]">
+				<munit:set-event doc:name="Set Event" doc:id="2d7da7b1-92f8-4fe8-b51c-f84e99e3963e" >
+					<munit:payload value="#[output application/json --- readUrl('classpath://jmsFlowcsvjsontest\mock_payload10.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variables >
+						<munit:variable key="rootMessage" value="#[readUrl('classpath://jmsFlowcsvjsontest\mock_variable_20.dwl')]" />
+						<munit:variable key="counter" value="#[readUrl('classpath://jmsFlowcsvjsontest\mock_variable_21.dwl')]" />
+					</munit:variables>
+				</munit:set-event>
+			</when>
+			<when expression="#[payload == 6]">
+				<munit:set-event doc:name="Set Event" doc:id="eb592bd2-4b72-47ad-87ce-de80e84ed556" >
+					<munit:payload value="#[output application/json --- readUrl('classpath://jmsFlowcsvjsontest\mock_payload11.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variables >
+						<munit:variable key="rootMessage" value="#[readUrl('classpath://jmsFlowcsvjsontest\mock_variable_22.dwl')]" />
+						<munit:variable key="counter" value="#[readUrl('classpath://jmsFlowcsvjsontest\mock_variable_23.dwl')]" />
+					</munit:variables>
+				</munit:set-event>
+			</when>
+			<otherwise >
+				<munit-tools:fail doc:name="Fail" doc:id="3b527ab6-eb60-4eef-9c8a-02212c0e87ef" message="There are no more events to mock"/>
+			</otherwise>
+		</choice>
+	</flow>
+
+
+</mule>

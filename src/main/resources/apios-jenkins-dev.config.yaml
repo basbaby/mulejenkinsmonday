@@ -1,0 +1,31 @@
+http:
+  port: '8081'
+
+db:
+  host: "64.227.37.97"
+  port: "3306"
+  user: "njclabs"
+  password: "training"
+  database: "nrs"
+  table: "test"
+
+jms:
+  brokerUrl: "tcp://64.227.37.97:61616"
+  userName: "admin"
+  password: "admin"
+  destination: "FunctionalAutomation"
+
+ftp:
+  host: "104.248.169.167"
+  port: "21"
+  userName: "njcftp"
+  password: "njcftpserver123*"
+  workingDir: "home/njcftp/ftp"
+  filepath: "sample.json"
+  
+json:
+  logger:
+    application:
+      name: "apiops-generic-db-sapi"
+      version: "1.0.0-SNAPSHOT"  
+
